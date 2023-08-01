@@ -3,9 +3,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const { DATABASE_URL } = process.env;
+const { POSTGRESS_URL } = process.env;
 
-const db = new Sequelize(DATABASE_URL, {
+const db = new Sequelize(POSTGRESS_URL, {
   dialect: "postgres",
   dialectOptions: {
     ssl: {
@@ -13,8 +13,9 @@ const db = new Sequelize(DATABASE_URL, {
       rejectUnauthorized: false,
     },
   },
-  sslmode: "require", // Agrega esta línea para utilizar SSL en la conexión
+  sslmode: "require",
 });
+
 
 // Test the database connection
 async function testConnection() {
