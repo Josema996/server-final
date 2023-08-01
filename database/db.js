@@ -16,7 +16,7 @@ const db = new Sequelize(POSTGRESS_DATABASE, POSTGRESS_USER, POSTGRESS_PASSWORD,
   dialectOptions: {
     ssl: {
       require: true,
-      rejectUnauthorized: false, // Add this line for self-signed certificates or if you're not using a CA
+      rejectUnauthorized: false, 
     },
   },
 });
