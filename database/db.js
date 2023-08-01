@@ -4,14 +4,14 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const {
-  POSTGRES_DATABASE,
-  POSTGRES_USER,
-  POSTGRES_PASSWORD,
-  POSTGRES_HOST,
+  POSTGRESS_DATABASE,
+  POSTGRESS_USER,
+  POSTGRESS_PASSWORD,
+  POSTGRESS_HOST,
 } = process.env;
 
-const db = new Sequelize(POSTGRES_DATABASE, POSTGRES_USER, POSTGRES_PASSWORD, {
-  host: POSTGRES_HOST,
+const db = new Sequelize(POSTGRESS_DATABASE, POSTGRESS_USER, POSTGRESS_PASSWORD, {
+  host: POSTGRESS_HOST,
   dialect: "postgres",
   dialectOptions: {
     ssl: true,
