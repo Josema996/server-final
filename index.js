@@ -7,28 +7,33 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("/blogs", blogRoutes);
-
-// Sincronizar el modelo con la base de datos
-db.sync({ alter: true })
-  .then(() => {
-    console.log("Synchronized the model with the database.");
-  })
-  .catch((error) => {
-    console.error("Error synchronizing the model:", error);
-  });
-
-try {
-  await db.authenticate();
-  console.log("Conexion exitosa mira aylen");
-} catch (error) {
-  console.log(`El error es: ${error}`);
-}
 
 app.get("/", (req, res) => {
   res.send("Hola aylen");
 });
 
+app.use("/blogs", blogRoutes);
+
+// Sincronizar el modelo con la base de datos
+app.get("/blogs/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    // Abrir la conexión a la base de datos
+    await db.authenticate();
+    // Realizar la operación con la base de datos
+    const blog = await db.models.Blog.findByPk(id);
+    // Cerrar la conexión con la base de datos
+    await db.close();
+
+    if (blog) {
+      res.json(blog);
+    } else {
+      res.status(404).json({ error: "Blog not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 app.listen(8000, () => {
   console.log("Server up running in http://localhost:8000/");
 });
