@@ -2,6 +2,9 @@ import express from "express";
 import cors from "cors";
 import { db, testConnection, syncModel } from "./database/db.js";
 import blogRoutes from "./routes/routes.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
