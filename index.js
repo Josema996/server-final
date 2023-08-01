@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import db from "./database/db.js";
+import { db, testConnection, syncModel } from "./database/db.js";
 import blogRoutes from "./routes/routes.js";
 
 const app = express();
@@ -15,18 +15,22 @@ app.get("/", (req, res) => {
 app.use("/blogs", blogRoutes);
 
 // Sincronizar el modelo con la base de datos
+
+// Test the database connection
+testConnection();
+
+// Synchronize the model with the database
+syncModel();
+
 app.get("/blogs/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    // Abrir la conexión a la base de datos
-    await db.authenticate();
-    // Realizar la operación con la base de datos
-    const blog = await db.models.Blog.findByPk(id);
-    // Cerrar la conexión con la base de datos
-    await db.close();
+    await db.connect(); // Abre la conexión a la base de datos
+    const result = await db.query("SELECT * FROM blogs WHERE id = $1", [id]);
+    await db.end(); // Cierra la conexión con la base de datos
 
-    if (blog) {
-      res.json(blog);
+    if (result.rowCount > 0) {
+      res.json(result.rows[0]);
     } else {
       res.status(404).json({ error: "Blog not found" });
     }
@@ -34,6 +38,7 @@ app.get("/blogs/:id", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 app.listen(8000, () => {
   console.log("Server up running in http://localhost:8000/");
 });
