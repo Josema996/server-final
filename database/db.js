@@ -3,9 +3,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const { POSTGRESS_URL } = process.env;
+const { POSTGRES_URL } = process.env;
 
-const db = new Sequelize(POSTGRESS_URL, {
+const db = new Sequelize(POSTGRES_URL, {
   dialect: "postgres",
   dialectOptions: {
     ssl: {
